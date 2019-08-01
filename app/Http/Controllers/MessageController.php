@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\User;
 use App\Message;
+use App\Notifications\InvoicePaid;
 
 class MessageController extends Controller
 {
@@ -65,13 +66,18 @@ class MessageController extends Controller
             ]
         );
 
-        // Create
+        // Create Message
         
-        Message::create([
+        $message = Message::create([
             "sender_id"     => auth()->user()->id,
             "recipient_id"  => $request->recipient_id,
             "body"          => $request->body
         ]);
+
+        // Obtener Recipient y notificar
+
+        $recipient = User::find($request->recipient_id);
+        $recipient->notify(new InvoicePaid($message));
 
         // Return
 

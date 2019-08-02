@@ -50,7 +50,12 @@
                             @endif
                         @else
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('message.index') }}">Notificaciones <span class="badge badge-pill badge-primary">1</span></a>
+                                <a class="nav-link" href="{{ route('message.index') }}">
+                                    Notificaciones 
+                                    @if ($count = auth()->user()->notifications->count())
+                                        <span class="badge badge-pill badge-primary">{{ $count}}</span>
+                                    @endif
+                                </a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

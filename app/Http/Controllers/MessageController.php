@@ -77,6 +77,7 @@ class MessageController extends Controller
         // Obtener Recipient y notificar
 
         $recipient = User::find($request->recipient_id);
+        
         $recipient->notify(new InvoicePaid($message));
 
         // Return

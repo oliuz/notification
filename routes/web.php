@@ -24,15 +24,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/test', 'TestController')->name('test');
 
-Route::get('/mail', function () {
-
-    return new OrderShipped;
-
-    // Mail::to('dmep@gmail.com')->send(new OrderShipped);
-    //     return 'Mensaje enviado';
-
-});
-
 /**
  * Auth
  */

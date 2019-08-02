@@ -27,6 +27,16 @@ class MessageController extends Controller
     public function index()
     {
         //
+        $unreadNotifications = auth()->user()->unreadNotifications;
+        $readNotifications = auth()->user()->readNotifications;
+
+        return view(
+            'auth.message.index',
+            [
+                'unreadNotifications' => $unreadNotifications,
+                'readNotifications' => $readNotifications,
+            ]
+        );
     }
 
     /**
@@ -42,7 +52,7 @@ class MessageController extends Controller
         $users = User::where('id', '!=', $user_auth)->get();
 
         return view(
-            'auth.message',
+            'auth.message.create',
             [
                 'users' => $users
             ]
@@ -77,7 +87,7 @@ class MessageController extends Controller
         // Obtener Recipient y notificar
 
         $recipient = User::find($request->recipient_id);
-        
+
         $recipient->notify(new InvoicePaid($message));
 
         // Return

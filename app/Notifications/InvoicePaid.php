@@ -7,6 +7,8 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
+use App\User;
+
 class InvoicePaid extends Notification
 {
     use Queueable;
@@ -57,6 +59,9 @@ class InvoicePaid extends Notification
      */
     public function toArray($notifiable)
     {
-        return $this->message->toArray();
+        return [
+            'link'  => route('message.show', $this->message->id),
+            'text'  => "Has recibido un mensaje de " . User::find($this->message->sender_id)->name,
+        ];
     }
 }

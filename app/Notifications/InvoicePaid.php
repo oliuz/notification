@@ -34,7 +34,7 @@ class InvoicePaid extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['nexmo','database'];
     }
 
     /**
@@ -62,5 +62,17 @@ class InvoicePaid extends Notification
             'link'  => route('message.show', $this->message->id),
             'text'  => "Has recibido un mensaje de " . $this->message->sender->name,
         ];
+    }
+
+    /**
+     * Get the Nexmo / SMS representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return NexmoMessage
+     */
+    public function toNexmo($notifiable)
+    {
+        return (new NexmoMessage)
+            ->content('Your SMS message content');
     }
 }

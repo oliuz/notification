@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Message;
 use App\Notifications\InvoicePaid;
+use Illuminate\Notifications\DatabaseNotification;
 
 class MessageController extends Controller
 {
@@ -30,11 +31,12 @@ class MessageController extends Controller
         $unreadNotifications = auth()->user()->unreadNotifications;
         $readNotifications = auth()->user()->readNotifications;
 
+
         return view(
             'auth.message.index',
             [
-                'unreadNotifications' => $unreadNotifications,
-                'readNotifications' => $readNotifications,
+                'unreadNotifications'   => $unreadNotifications,
+                'readNotifications'     => $readNotifications,
             ]
         );
     }
@@ -106,6 +108,14 @@ class MessageController extends Controller
     public function show($id)
     {
         //
+        $notification = Message::with('sender')->findOrFail($id);
+
+        return view(
+            'auth.message.show',
+            [
+                'notification'  =>  $notification,
+            ]
+        );
     }
 
     /**
@@ -122,13 +132,15 @@ class MessageController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
         //
+        DatabaseNotification::findOrFail($id)->markAsRead();
+
+        return back()->with('update', 'Notificación marcada como leida');
     }
 
     /**
@@ -140,5 +152,9 @@ class MessageController extends Controller
     public function destroy($id)
     {
         //
+        DatabaseNotification::findOrFail($id)->delete();
+
+        return back()->with('destroy', 'Notificación eliminada');
     }
+
 }

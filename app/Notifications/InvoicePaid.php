@@ -61,7 +61,7 @@ class InvoicePaid extends Notification
     {
         return [
             'link'  => route('message.show', $this->message->id),
-            'text'  => "Has recibido un mensaje de " . User::find($this->message->sender_id)->name,
+            'text'  => "Has recibido un mensaje de " . $this->message->sender->name,
         ];
     }
 }
